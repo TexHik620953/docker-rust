@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  rust-server:
+    container_name: rust-server
+    hostname: rust-server
+    build: ./gameserver
+    ports:
+      - 10010:10010
+      - 10010:10010/udp
+      - 10011:10011
+      - 10011:10011/udp
+      - 10012:10012
+      - 10012:10012/udp
+      - 10013:10013
+      - 10013:10013/udp
+    volumes:
+      - ./servers/semiclassic/oxide:/server/oxide
+      - ./servers/semiclassic/server:/server/server
+      - ./servers/semiclassic/server_config.json:/server/server_config.json:ro
+  pg-uptrace:
+    container_name: pg-uptrace
+    hostname: pg-uptrace
+    image: postgres:15
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data:z
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    environment:
+      - POSTGRES_PASSWORD=$PG_UPTRACE_PASSWORD
+      - POSTGRES_USER=$PG_UPTRACE_USER
+      - POSTGRES_DB=$PG_UPTRACE_DB
+  clickhouse:
+    container_name: clickhouse
+    hostname: clickhouse
+    image: clickhouse/clickhouse-server
+    ports:
+      - 9047:9000
+  uptrace:  
+    container_name: uptrace
+    hostname: uptrace
+    image: uptrace/uptrace
+    volumes:
+      - ./config/uptrace.yml:/etc/uptrace/uptrace.yml:ro
+    ports:
+      - 14318:14318 #HTTP + webpanel
+  metrics-server:
+    container_name: metrics-server
+    hostname: metrics-server
+    build: ./metrics-server
+    environment:
+      - UPTRACE_DSN=http://IJALGDFSHGIKUHDS87HRIFE92318Y98RHBFN8EY3118092FDH3891H80F317HF80EN8NO8IFS@uptrace:14318?grpc=14317
+      - ANALYTICS_SECRET=aboba

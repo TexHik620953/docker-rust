@@ -1,0 +1,34 @@
+{
+  "colors": {
+    "default": {
+      "NameColor": "#FF8B55",
+      "Prefix": "ИГРОК",
+      "PrefixColor": "#42aaff",
+      "TextColor": "#ffffff"
+    },
+    "vip": {
+      "NameColor": "#4CD4B0",
+      "Prefix": "VIP",
+      "PrefixColor": "#3c78d8",
+      "TextColor": "#ffffff"
+    },
+    "gold": {
+      "NameColor": "#F24D16",
+      "Prefix": "GOLD",
+      "PrefixColor": "#6aa84f",
+      "TextColor": "#ffffff"
+    },
+    "grand": {
+      "NameColor": "#44BBFF",
+      "Prefix": "GRAND",
+      "PrefixColor": "#9900ff",
+      "TextColor": "#ffffff"
+    },
+    "astro": {
+      "NameColor": "#00D717",
+      "Prefix": "ASTRO",
+      "PrefixColor": "#980000",
+      "TextColor": "#ffffff"
+    }
+  }
+}
