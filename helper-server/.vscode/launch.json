@@ -12,7 +12,9 @@
             "program": "./main.go",
             "env": {
                 "UPTRACE_DSN": "123",
-                "ANALYTICS_SECRET": "aboba"
+                "ANALYTICS_SECRET": "abobaKey",
+                "FEEDBACK_SECRET": "abobaKey",
+                "DB_DSN": "host=localhost user=root password=HermanFuLLer dbname=default port=5437 sslmode=disable"
             }
         }
     ]

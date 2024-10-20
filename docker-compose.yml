@@ -15,24 +15,24 @@ services:
       - 10013:10013
       - 10013:10013/udp
     volumes:
-      - ./servers/semiclassic/oxide:/server/oxide
-      - ./servers/semiclassic/server:/server/server
-      - ./servers/semiclassic/server_config.json:/server/server_config.json:ro
+      - ./servers/crust/oxide:/server/oxide
+      - ./servers/crust/server:/server/server
+      - ./servers/crust/server_config.json:/server/server_config.json:ro
   pg-uptrace:
     container_name: pg-uptrace
     hostname: pg-uptrace
     image: postgres:15
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data:z
+      - ./data/postgres-uptrace:/var/lib/postgresql/data:z
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 10
     environment:
-      - POSTGRES_PASSWORD=$PG_UPTRACE_PASSWORD
-      - POSTGRES_USER=$PG_UPTRACE_USER
-      - POSTGRES_DB=$PG_UPTRACE_DB
+      POSTGRES_PASSWORD: $PG_UPTRACE_PASSWORD
+      POSTGRES_USER: $PG_UPTRACE_USER
+      POSTGRES_DB: $PG_UPTRACE_DB
   clickhouse:
     container_name: clickhouse
     hostname: clickhouse
@@ -47,10 +47,29 @@ services:
       - ./config/uptrace.yml:/etc/uptrace/uptrace.yml:ro
     ports:
       - 14318:14318 #HTTP + webpanel
-  metrics-server:
-    container_name: metrics-server
-    hostname: metrics-server
-    build: ./metrics-server
+  pg-general:
+    container_name: pg-general
+    hostname: pg-general
+    image: postgres:15
+    volumes:
+      - ./data/postgres-general:/var/lib/postgresql/data:z
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     environment:
-      - UPTRACE_DSN=http://IJALGDFSHGIKUHDS87HRIFE92318Y98RHBFN8EY3118092FDH3891H80F317HF80EN8NO8IFS@uptrace:14318?grpc=14317
-      - ANALYTICS_SECRET=aboba
+      POSTGRES_PASSWORD: $PG_GENERAL_PASSWORD
+      POSTGRES_USER: $PG_GENERAL_USER
+      POSTGRES_DB: $PG_GENERAL_DB      
+    ports:
+      - 5437:5432      
+  helper-server:
+    container_name: helper-server
+    hostname: helper-server
+    build: ./helper-server
+    environment:
+      UPTRACE_DSN: 'http://IJALGDFSHGIKUHDS87HRIFE92318Y98RHBFN8EY3118092FDH3891H80F317HF80EN8NO8IFS@uptrace:14318?grpc=14317'
+      ANALYTICS_SECRET: 'aboba'
+      FEEDBACK_SECRET: 'aboba'
+      DB_DSN: 'host=pg-general user=root password=HermanFuLLer dbname=default port=5432 sslmode=disable'
