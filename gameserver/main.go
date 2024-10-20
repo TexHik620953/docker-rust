@@ -112,7 +112,7 @@ func exists(path string) (bool, error) {
 
 func CreateCfgFile(serverConfig *RustServerConfig) error {
 	//"/serverauto.cfg"
-	cfg_dir_path := path.Join(SERVER_PATH, "/server/Save/cfg")
+	cfg_dir_path := path.Join(SERVER_PATH, "/server/my_server_identity/cfg")
 	ex, err := exists(cfg_dir_path)
 	if err != nil {
 		return fmt.Errorf("failed to check exists: %v", err)
