@@ -142,6 +142,16 @@ type RustServerConfig struct {
 	Racetimeout                             string `json:"waypointrace.racetimeout" default:"900"`
 }
 
+func (h RustServerConfig) BuildArgs() []string {
+	args := make([]string, 0)
+
+	args = append(args, "+rcon.port", h.ServerRconport)
+	args = append(args, "+rcon.web", h.ServerRconWeb)
+	args = append(args, "+rcon.ip", h.ServerRconip)
+	args = append(args, "+rcon.password", h.ServerRconPassword)
+
+	return args
+}
 func (h RustServerConfig) BuildConfig() string {
 	t := reflect.TypeOf(h)
 	v := reflect.ValueOf(h)
@@ -242,7 +252,7 @@ func CreateCfgFile(serverConfig *RustServerConfig) error {
 // RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/server/RustDedicated_Data/Plugins' > /server/bootstrap.sh
 // RUN echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/server/RustDedicated_Data/Plugins/x86_64' >> /server/bootstrap.sh
 func RunServer(serverConfig *RustServerConfig) error {
-	SERVER_CMD = exec.Command(path.Join(SERVER_PATH, "/RustDedicated"))
+	SERVER_CMD = exec.Command(path.Join(SERVER_PATH, "/RustDedicated"), serverConfig.BuildArgs()...)
 	SERVER_CMD.Stdout = os.Stdout
 	SERVER_CMD.Stderr = os.Stderr
 	SERVER_CMD.Env = append(SERVER_CMD.Env, "LD_LIBRARY_PATH=:/server/RustDedicated_Data/Plugins:/server/RustDedicated_Data/Plugins/x86_64")
