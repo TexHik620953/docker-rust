@@ -167,7 +167,7 @@ func main() {
 	var serverConfig RustServerConfig
 	file, err := os.Open("./server_config.json")
 	if err != nil {
-		f, err := os.Create("server_config.json")
+		f, err := os.Create("./server_config.json")
 		if err == nil {
 			b, _ := json.MarshalIndent(&RustServerConfig{}, "", "\t")
 			f.Write(b)
