@@ -22,6 +22,8 @@ type RustServerConfig struct {
 	ServerStats                             string `json:"server.stats" default:"1"`
 	ServerAppport                           string `json:"app.port" default:"10012"`
 	ServerRconport                          string `json:"rcon.port" default:"10013"`
+	ServerRconip                            string `json:"rcon.ip" default:"0.0.0.0"`
+	ServerRconWeb                           string `json:"rcon.web" default:"True"`
 	ServerRconPassword                      string `json:"rcon.password" default:"sahisahdfbasb37"`
 	Backtracklength                         string `json:"boombox.backtracklength" default:"30"`
 	Serverurllist                           string `json:"boombox.serverurllist" default:""`
@@ -77,7 +79,7 @@ type RustServerConfig struct {
 	Favoritesendpoint                       string `json:"server.favoritesendpoint" default:""`
 	Funwaterdamagethreshold                 string `json:"server.funwaterdamagethreshold" default:"0.8"`
 	Funwaterwetnessgain                     string `json:"server.funwaterwetnessgain" default:"0.05"`
-	Headerimage                             string `json:"server.headerimage" default:"https://i.imgur.com/cX0MokG.png"`
+	Headerimage                             string `json:"server.headerimage" default:"https://i.imgur.com/hXUzeof.png"`
 	Incapacitatedrecoverchance              string `json:"server.incapacitatedrecoverchance" default:"0.1"`
 	Industrialcrafterfrequency              string `json:"server.industrialcrafterfrequency" default:"5"`
 	Industrialframebudgetms                 string `json:"server.industrialframebudgetms" default:"0.5"`
