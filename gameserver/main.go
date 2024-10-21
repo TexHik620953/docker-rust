@@ -21,10 +21,10 @@ type RustServerConfig struct {
 	ServerAnalyticsUrl                      string `json:"analytics.server_analytics_url" default:"http://metrics-server:5555/event"`
 	ServerStats                             string `json:"server.stats" default:"1"`
 	ServerAppport                           string `json:"app.port" default:"10012"`
-	ServerRconport                          string `json:"rcon.port" default:"10013"`
-	ServerRconip                            string `json:"rcon.ip" default:"0.0.0.0"`
-	ServerRconWeb                           string `json:"rcon.web" default:"True"`
-	ServerRconPassword                      string `json:"rcon.password" default:"sahisahdfbasb37"`
+	ServerRconport                          string `json:"rcon.port" default:"10013" asarg:""`
+	ServerRconip                            string `json:"rcon.ip" default:"0.0.0.0" asarg:""`
+	ServerRconWeb                           string `json:"rcon.web" default:"True" asarg:""`
+	ServerRconPassword                      string `json:"rcon.password" default:"sahisahdfbasb37" asarg:""`
 	Backtracklength                         string `json:"boombox.backtracklength" default:"30"`
 	Serverurllist                           string `json:"boombox.serverurllist" default:""`
 	Allowdesigning                          string `json:"ai.allowdesigning" default:"True"`
@@ -143,14 +143,30 @@ type RustServerConfig struct {
 }
 
 func (h RustServerConfig) BuildArgs() []string {
-	args := make([]string, 0)
+	t := reflect.TypeOf(h)
+	v := reflect.ValueOf(h)
+	text := make([]string, 0)
+	for i := 0; i < v.NumField(); i++ {
+		key := t.Field(i).Tag.Get("json")
+		field := v.Field(i)
+		defaultValue := t.Field(i).Tag.Get("default")
+		_, asarg := t.Field(i).Tag.Lookup("asarg")
+		if !asarg {
+			continue
+		}
 
-	args = append(args, "+rcon.port", h.ServerRconport)
-	args = append(args, "+rcon.web", h.ServerRconWeb)
-	args = append(args, "+rcon.ip", h.ServerRconip)
-	args = append(args, "+rcon.password", h.ServerRconPassword)
+		defaultValue = strings.ReplaceAll(defaultValue, "\n", "\\n")
 
-	return args
+		value := ""
+
+		if len(field.String()) == 0 {
+			value = fmt.Sprintf("%s", defaultValue)
+		} else {
+			value = fmt.Sprintf("%s", field.String())
+		}
+		text = append(text, fmt.Sprintf("+%s", key), value)
+	}
+	return text
 }
 func (h RustServerConfig) BuildConfig() string {
 	t := reflect.TypeOf(h)
@@ -160,6 +176,10 @@ func (h RustServerConfig) BuildConfig() string {
 		key := t.Field(i).Tag.Get("json")
 		field := v.Field(i)
 		defaultValue := t.Field(i).Tag.Get("default")
+		_, asarg := t.Field(i).Tag.Lookup("asarg")
+		if asarg {
+			continue
+		}
 
 		defaultValue = strings.ReplaceAll(defaultValue, "\n", "\\n")
 
