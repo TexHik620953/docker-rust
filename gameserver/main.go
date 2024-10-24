@@ -52,7 +52,7 @@ type RustServerConfig struct {
 	Treecollision                           string `json:"physics.treecollision" default:"True"`
 	Woundforever                            string `json:"player.woundforever" default:"False"`
 	ServerHostname                          string `json:"server.hostname" default:"CRUST MAX3 X3 [SHIELDS|PROTECTION]"`
-	ServerDescription                       string `json:"server.description" default:"Мод сервер с уникальной системой рейдов и защиты домов.\\\n\\n• Макс команда: 3 человека\\n• Рейты добычи: x3\\n• Рейт добычи серы: x5\\n• Скорость крафта: x2\\n• Оффлайн укрепление построек\\n\\nВайпы каждые 2 недели, глобальный вайп раз в месяц\\n"`
+	ServerDescription                       string `json:"server.description" default:"Мод сервер с уникальной системой рейдов и защиты домов.\\n\\n• Макс команда: 3 человека\\n• Рейты добычи: x3\\n• Рейт добычи серы: x5\\n• Скорость крафта: x2\\n• Оффлайн укрепление построек\\n\\nВайпы каждые 2 недели, глобальный вайп раз в месяц\\n"`
 	ServerUrl                               string `json:"server.url" default:"https://discord.com/invite/UK6fJbmPp3"`
 	ServerSeed                              string `json:"server.seed" default:"2174689"`
 	ServerWorldsize                         string `json:"server.worldsize" default:"4250"`
