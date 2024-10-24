@@ -1,8 +1,10 @@
 {
-	"analytics.server_analytics_url default:": "",
+	"analytics.server_analytics_url": "",
 	"server.stats": "",
 	"app.port": "",
 	"rcon.port": "",
+	"rcon.ip": "",
+	"rcon.web": "",
 	"rcon.password": "",
 	"boombox.backtracklength": "",
 	"boombox.serverurllist": "",

@@ -18,6 +18,13 @@ services:
       - ./servers/crust/oxide:/server/oxide
       - ./servers/crust/server:/server/server
       - ./servers/crust/server_config.json:/server/server_config.json:ro
+    logging:
+        driver: "json-file"
+        options:
+          max-size: "5m"
+          max-file: "5"
+    depends_on:
+      - helper-server
   pg-uptrace:
     container_name: pg-uptrace
     hostname: pg-uptrace
@@ -33,12 +40,20 @@ services:
       POSTGRES_PASSWORD: $PG_UPTRACE_PASSWORD
       POSTGRES_USER: $PG_UPTRACE_USER
       POSTGRES_DB: $PG_UPTRACE_DB
+    logging:
+        driver: "json-file"
+        options:
+          max-size: "5m"
+          max-file: "5"      
   clickhouse:
     container_name: clickhouse
     hostname: clickhouse
     image: clickhouse/clickhouse-server
-    ports:
-      - 9047:9000
+    logging:
+        driver: "json-file"
+        options:
+          max-size: "5m"
+          max-file: "5"   
   uptrace:  
     container_name: uptrace
     hostname: uptrace
@@ -47,6 +62,14 @@ services:
       - ./config/uptrace.yml:/etc/uptrace/uptrace.yml:ro
     ports:
       - 14318:14318 #HTTP + webpanel
+    logging:
+        driver: "json-file"
+        options:
+          max-size: "5m"
+          max-file: "5"
+    depends_on:
+      - pg-uptrace
+      - clickhouse
   pg-general:
     container_name: pg-general
     hostname: pg-general
@@ -64,6 +87,11 @@ services:
       POSTGRES_DB: $PG_GENERAL_DB      
     ports:
       - 5437:5432      
+    logging:
+        driver: "json-file"
+        options:
+          max-size: "5m"
+          max-file: "5"   
   helper-server:
     container_name: helper-server
     hostname: helper-server
@@ -73,3 +101,12 @@ services:
       ANALYTICS_SECRET: 'aboba'
       FEEDBACK_SECRET: 'aboba'
       DB_DSN: 'host=pg-general user=root password=HermanFuLLer dbname=default port=5432 sslmode=disable'
+    logging:
+        driver: "json-file"
+        options:
+          max-size: "5m"
+          max-file: "5"   
+    ports:
+      - 8081:5555
+    depends_on:
+      - pg-general

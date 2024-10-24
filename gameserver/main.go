@@ -18,7 +18,7 @@ const SERVER_PATH = "/server"
 var SERVER_CMD *exec.Cmd
 
 type RustServerConfig struct {
-	ServerAnalyticsUrl                      string `json:"analytics.server_analytics_url" default:"http://metrics-server:5555/event"`
+	ServerAnalyticsUrl                      string `json:"analytics.server_analytics_url" default:"http://helper-server:5555/event"`
 	ServerStats                             string `json:"server.stats" default:"1"`
 	ServerAppport                           string `json:"app.port" default:"10012"`
 	ServerRconport                          string `json:"rcon.port" default:"10013" asarg:""`
@@ -99,7 +99,7 @@ type RustServerConfig struct {
 	Pingduration                            string `json:"server.pingduration" default:"10"`
 	Playerserverfall                        string `json:"server.playerserverfall" default:"True"`
 	Printreportstoconsole                   string `json:"server.printreportstoconsole" default:"False"`
-	Reportsserverendpoint                   string `json:"server.reportsserverendpoint" default:"http://metrics-server:5555/feedback"`
+	Reportsserverendpoint                   string `json:"server.reportsserverendpoint" default:"http://helper-server:5555/feedback"`
 	Reportsserverendpointkey                string `json:"server.reportsserverendpointkey" default:"aboba"`
 	Rewounddelay                            string `json:"server.rewounddelay" default:"60"`
 	Savebackupcount                         string `json:"server.savebackupcount" default:"2"`
@@ -107,7 +107,7 @@ type RustServerConfig struct {
 	Showholstereditems                      string `json:"server.showholstereditems" default:"True"`
 	Sprinklereyeheightoffset                string `json:"server.sprinklereyeheightoffset" default:"3"`
 	Sprinklerradius                         string `json:"server.sprinklerradius" default:"3"`
-	Tags                                    string `json:"server.tags" default:"biweekly,EU"`
+	Tags                                    string `json:"server.tags" default:"biweekly,EU" asarg:""`
 	Tutorialenabled                         string `json:"server.tutorialenabled" default:"False"`
 	Watercontainersleavewaterbehind         string `json:"server.watercontainersleavewaterbehind" default:"False"`
 	Workbench1taxrate                       string `json:"server.workbench1taxrate" default:"0"`
