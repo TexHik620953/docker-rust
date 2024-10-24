@@ -1,15 +1,17 @@
 package application
 
 import (
+	"fmt"
 	"helper-server/internal/models"
 	"log"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
 type report struct {
-	Reporter uint64 `json:"reporter_steamid"`
-	Target   uint64 `json:"target_steamid"`
+	Reporter string `json:"reporter_steamid"`
+	Target   string `json:"target_steamid"`
 	Subject  string `json:"subject"`
 	Message  string `json:"message"`
 }
@@ -22,8 +24,21 @@ func (h *Application) reportHandler(c echo.Context) error {
 		return err
 	}
 
+	reporterId, err := strconv.ParseUint(payload.Reporter, 10, 64)
+	if err != nil {
+		log.Printf("Failed to parse body: %s\n", err.Error())
+		return err
+	}
+	targetId, err := strconv.ParseUint(payload.Target, 10, 64)
+	if err != nil {
+		log.Printf("Failed to parse body: %s\n", err.Error())
+		return err
+	}
+
+	fmt.Printf("received eport from %d to %d\n", reporterId, targetId)
+
 	reporter := &models.Player{
-		SteamID: payload.Reporter,
+		SteamID: reporterId,
 	}
 	err = h.repo.AttachPlayer(reporter)
 	if err != nil {
@@ -32,7 +47,7 @@ func (h *Application) reportHandler(c echo.Context) error {
 	}
 
 	target := &models.Player{
-		SteamID: payload.Target,
+		SteamID: targetId,
 	}
 	err = h.repo.AttachPlayer(target)
 	if err != nil {
