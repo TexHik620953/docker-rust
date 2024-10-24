@@ -30,11 +30,6 @@ func (h *Application) reportHandler(c echo.Context) error {
 		log.Printf("Failed to parse body: %s\n", err.Error())
 		return err
 	}
-	fmt.Println(payload.Reporter)
-	fmt.Println(payload.Target)
-	fmt.Println(payload.Subject)
-	fmt.Println(payload.Message)
-
 	reporterId, err := strconv.ParseUint(payload.Reporter, 10, 64)
 	if err != nil {
 		log.Printf("Failed to parse reporter_steamid: %s\n", err.Error())
@@ -46,7 +41,7 @@ func (h *Application) reportHandler(c echo.Context) error {
 		return err
 	}
 
-	fmt.Printf("received eport from %d to %d\n", reporterId, targetId)
+	fmt.Printf("received report from %d to %d\n", reporterId, targetId)
 
 	reporter := &models.Player{
 		SteamID: reporterId,
