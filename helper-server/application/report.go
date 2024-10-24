@@ -1,6 +1,7 @@
 package application
 
 import (
+	"encoding/json"
 	"fmt"
 	"helper-server/internal/models"
 	"log"
@@ -17,21 +18,31 @@ type report struct {
 }
 
 func (h *Application) reportHandler(c echo.Context) error {
+	/*
+		text, _ := io.ReadAll(c.Request().Body)
+		t1 := string(text)
+		fmt.Println(t1)
+	*/
+
 	payload := &report{}
-	err := (&echo.DefaultBinder{}).BindBody(c, payload)
+	err := json.NewDecoder(c.Request().Body).Decode(payload)
 	if err != nil {
 		log.Printf("Failed to parse body: %s\n", err.Error())
 		return err
 	}
+	fmt.Println(payload.Reporter)
+	fmt.Println(payload.Target)
+	fmt.Println(payload.Subject)
+	fmt.Println(payload.Message)
 
 	reporterId, err := strconv.ParseUint(payload.Reporter, 10, 64)
 	if err != nil {
-		log.Printf("Failed to parse body: %s\n", err.Error())
+		log.Printf("Failed to parse reporter_steamid: %s\n", err.Error())
 		return err
 	}
 	targetId, err := strconv.ParseUint(payload.Target, 10, 64)
 	if err != nil {
-		log.Printf("Failed to parse body: %s\n", err.Error())
+		log.Printf("Failed to parse target_steamid: %s\n", err.Error())
 		return err
 	}
 
