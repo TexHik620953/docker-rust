@@ -85,7 +85,7 @@ metrics_from_spans:
 auth:
   users:
     - name: MegaAdmin
-      email: gena@rust.ru
+      email: admin@rust.ru
       password: HermanFuLLer
       notify_by_email: false
 
