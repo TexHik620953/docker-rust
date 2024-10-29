@@ -23,8 +23,6 @@ services:
         options:
           max-size: "5m"
           max-file: "5"
-    depends_on:
-      - helper-server
   pg-uptrace:
     container_name: pg-uptrace
     hostname: pg-uptrace

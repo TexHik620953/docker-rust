@@ -36,6 +36,8 @@ func New(ctx context.Context, cfg *config.AppConfig) (*Application, error) {
 	h.api.Any("/feedback", h.feedbackHandler)
 	h.api.Any("/report", h.reportHandler)
 
+	h.api.Static("/static", "./static")
+
 	{
 		balance_group := h.api.Group("/balance")
 		balance_group.POST("/:steam_id/withdraw", h.withdrawBalance)
