@@ -96,5 +96,7 @@ services:
           max-file: "5"   
     ports:
       - 8081:5555
+    volumes:
+      - ./static/items:/app/static/items
     depends_on:
       - pg-general
